@@ -1,0 +1,26 @@
+[
+  {
+    "title": "餐饮",
+    "image": "assets/images/record_item/food.png"
+  },
+  {
+    "title": "交通",
+    "image": "assets/images/record_item/traffic.png"
+  },
+  {
+    "title": "数码",
+    "image": "assets/images/record_item/tech_device.png"
+  },
+  {
+    "title": "住房",
+    "image": "assets/images/record_item/house.png"
+  },
+  {
+    "title": "蔬菜",
+    "image": "assets/images/record_item/vegetable.png"
+  },
+  {
+    "title": "水果",
+    "image": "assets/images/record_item/fruit.png"
+  }
+]
