@@ -10,7 +10,7 @@ class BottomSettings extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         SizedBox(
-          width: 26,
+          width: 34,
         ),
         GestureDetector(
           onTap: () {
@@ -22,10 +22,13 @@ class BottomSettings extends StatelessWidget {
           onTap: () {
             RouterUtils.pushNamed(context, SettingPage.routeName);
           },
-          child: SizedBox(
-            width: 26,
-            height: 26,
-            child: Image.asset("assets/images/setting.png"),
+          child: Padding(
+            padding: EdgeInsets.all(4.0),
+            child: SizedBox(
+              width: 26,
+              height: 26,
+              child: Image.asset("assets/images/setting.png"),
+            ),
           ),
         ),
       ],

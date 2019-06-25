@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mark/components/bottom_settings.dart';
+import 'package:mark/manager/file_manager.dart';
 import 'package:mark/styles/colors.dart';
 import 'package:mark/utils/logger.dart';
 import 'package:mark/views/home/home_bloc.dart';

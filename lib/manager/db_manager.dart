@@ -32,4 +32,10 @@ create table mark_record (
   )
 ''');
   }
+
+  Future delete() async {
+    var db = await initDB();
+    db.delete('mark_record');
+    return 0;
+  }
 }
