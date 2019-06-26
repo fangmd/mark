@@ -38,7 +38,9 @@ class FileManager {
     File dbFile = await _getDBFile();
 
     //delete newFile First
-    dbFile.deleteSync();
+    if (dbFile.existsSync()) {
+      dbFile.deleteSync();
+    }
 
     await copyFile(backupFile.path, dbFile.path);
     return true;

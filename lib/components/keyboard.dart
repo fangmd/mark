@@ -4,6 +4,7 @@ import 'package:mark/styles/colors.dart';
 import 'package:mark/utils/convert_utils.dart';
 import 'package:mark/utils/logger.dart';
 import 'package:mark/utils/time_utils.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 typedef OnCancel = void Function();
 
@@ -22,6 +23,13 @@ class _KeyboardState extends State<Keyboard> {
   var comment = '';
   var showNumberboard = true;
   var stateText = 'Cancel'; // Cancel/OK Button
+  var _keyboardListenerId;
+
+  @override
+  void initState() {
+    _addKeyboardListener();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,5 +197,26 @@ class _KeyboardState extends State<Keyboard> {
   void _updateStateText() {
     var value = converStrToDouble(this.inputValueStr);
     this.stateText = value != 0 ? 'OK' : 'Cancel';
+  }
+
+  void _addKeyboardListener() {
+    this._keyboardListenerId = KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        print(visible);
+        setState(() {
+          this.showNumberboard = !visible;
+        });
+      },
+    );
+  }
+
+  void _removeKeyboardListener() {
+    KeyboardVisibilityNotification().removeListener(this._keyboardListenerId);
+  }
+
+  @override
+  void dispose() {
+    _removeKeyboardListener();
+    super.dispose();
   }
 }
