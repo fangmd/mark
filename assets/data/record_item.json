@@ -22,5 +22,21 @@
   {
     "title": "水果",
     "image": "assets/images/record_item/fruit.png"
+  },
+  {
+    "title": "零食",
+    "image": "assets/images/record_item/lingshi.png"
+  },
+  {
+    "title": "网络",
+    "image": "assets/images/record_item/net.png"
+  },
+  {
+    "title": "通讯",
+    "image": "assets/images/record_item/tongxun.png"
+  },
+  {
+    "title": "服饰",
+    "image": "assets/images/record_item/fushi.png"
   }
 ]
