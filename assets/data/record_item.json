@@ -38,5 +38,37 @@
   {
     "title": "服饰",
     "image": "assets/images/record_item/fushi.png"
+  },
+  {
+    "title": "日用品",
+    "image": "assets/images/record_item/riyongpin.png"
+  },
+  {
+    "title": "办公",
+    "image": "assets/images/record_item/bangong.png"
+  },
+  {
+    "title": "办公",
+    "image": "assets/images/record_item/bangong.png"
+  },
+  {
+    "title": "教育",
+    "image": "assets/images/record_item/education.png"
+  },
+  {
+    "title": "医疗",
+    "image": "assets/images/record_item/yiliao.png"
+  },
+  {
+    "title": "数码",
+    "image": "assets/images/record_item/shuma.png"
+  },
+  {
+    "title": "书籍",
+    "image": "assets/images/record_item/shuji.png"
+  },
+  {
+    "title": "汽车",
+    "image": "assets/images/record_item/qiche.png"
   }
 ]
