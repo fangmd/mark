@@ -92,7 +92,7 @@ class _KeyboardState extends State<Keyboard> {
         lastDate: new DateTime(2020));
     if (picked != null) {
       setState(() {
-        this.time = picked.toUtc();
+        this.time = picked;
       });
     }
   }
