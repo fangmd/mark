@@ -19,28 +19,28 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void didUpdateWidget(SplashPage oldWidget) {
-    // PermissionHandler()
-    //     .checkPermissionStatus(PermissionGroup.contacts)
-    //     .then((value) {
-    //   if (value == PermissionStatus.granted) {
-    //     this._canClose = true;
-    //   } else if (value == PermissionStatus.denied || value == PermissionStatus.unknown) {
-    //     // android only
-    //     PermissionHandler()
-    //         .shouldShowRequestPermissionRationale(PermissionGroup.storage)
-    //         .then((value) {
-    //       RouterUtils.pushNamedAndRemoveAll(context, HomePage.routeName);
-    //     });
-    //   }
-    // });
+    PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.contacts)
+        .then((value) {
+      if (value == PermissionStatus.granted) {
+        this._canClose = true;
+        RouterUtils.pushNamedAndRemoveAll(context, HomePage.routeName);
+      } else if (value == PermissionStatus.denied ||
+          value == PermissionStatus.unknown) {
+        PermissionHandler()
+            .requestPermissions([PermissionGroup.storage]).then((value) {
+          RouterUtils.pushNamedAndRemoveAll(context, HomePage.routeName);
+        });
+      }
+    });
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(milliseconds: 500), () {
-      RouterUtils.pushNamedAndRemoveAll(context, HomePage.routeName);
-    });
+    // Timer(Duration(milliseconds: 500), () {
+    //   RouterUtils.pushNamedAndRemoveAll(context, HomePage.routeName);
+    // });
     return Scaffold(
       body: SafeArea(
         child: Column(
