@@ -113,6 +113,10 @@ class _KeyboardState extends State<Keyboard> {
         child: Text(
           timeStr,
           textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: timeStr == '今天' ? 18 : 16,
+            color: Colors.black,
+          ),
         ),
       ),
     );
@@ -128,6 +132,11 @@ class _KeyboardState extends State<Keyboard> {
         child: Text(
           text,
           textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+            // fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
