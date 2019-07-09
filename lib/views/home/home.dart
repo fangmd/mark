@@ -25,9 +25,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    print('${new DateTime(2019, 6, 28, 1).toUtc().millisecondsSinceEpoch}');
-    print('${new DateTime(2019, 6, 28, 23).toUtc().millisecondsSinceEpoch}');
-
     homeBloc.getMonthExpand().then((value) {
       Logger.d(msg: 'Value: $value');
       setState(() {
@@ -38,14 +35,12 @@ class _HomePageState extends State<HomePage> {
     });
 
     homeBloc.getDayExpend().then((value) {
-      Logger.d(msg: 'Value: ${value[0]}');
       setState(() {
         this._dayExpend = value[0].toString();
         this._dayRecordEntity = _mergeAndSortData(value[1]);
       });
 
       Future.delayed(Duration.zero, () {
-        print('Future delayed');
         var imgList = List<String>();
         this._dayRecordEntity.forEach((v) {
           getImgFromType(context, v.type).then((img) {

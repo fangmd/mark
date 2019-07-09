@@ -19,8 +19,8 @@ class RecordEntity {
   Map<String, dynamic> toMapDB() {
     var map = <String, dynamic>{
       'id': id,
-      'createDate': createDate.toUtc().millisecondsSinceEpoch,
-      'recordDateTime': recordDateTime.toUtc().millisecondsSinceEpoch,
+      'createDate': createDate.millisecondsSinceEpoch,
+      'recordDateTime': recordDateTime.millisecondsSinceEpoch,
       'type': type,
       'value': value,
       'comments': comments,

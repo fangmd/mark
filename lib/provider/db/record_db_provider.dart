@@ -17,13 +17,13 @@ class RecordDBProvider {
   }
 
   Future<List<RecordEntity>> getRecordByMonth(int year, int month) async {
-    var from = new DateTime(year, month, 1).toUtc().millisecondsSinceEpoch;
+    var from = new DateTime(year, month, 1).millisecondsSinceEpoch;
     Logger.d(msg: "getRecordByMonth from: $from");
     var last;
     if (month == 12) {
-      last = new DateTime(year + 1, 1, 1).toUtc().millisecondsSinceEpoch;
+      last = new DateTime(year + 1, 1, 1).millisecondsSinceEpoch;
     } else {
-      last = new DateTime(year, month + 1, 1).toUtc().millisecondsSinceEpoch;
+      last = new DateTime(year, month + 1, 1).millisecondsSinceEpoch;
     }
 
     List<Map> query = await db.rawQuery(
@@ -46,9 +46,8 @@ class RecordDBProvider {
   Future<List<RecordEntity>> getRecordByDay(
       int year, int month, int day) async {
     var from =
-        new DateTime(year, month, day, 0, 0, 0).toUtc().millisecondsSinceEpoch;
+        new DateTime(year, month, day, 0, 0, 0).millisecondsSinceEpoch;
     var last = new DateTime(year, month, day, 23, 59, 59)
-        .toUtc()
         .millisecondsSinceEpoch;
     Logger.d(msg: "getRecordByDay from: $from , to $last");
 
