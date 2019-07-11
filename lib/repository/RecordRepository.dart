@@ -16,8 +16,9 @@ class RecordRepository {
     return recordDb;
   }
 
-  Future<int> getMonthAmount(int year, int month, int day) async {
-    List<RecordEntity> recordsDB = _map[day];
+  /// 获取单月记录
+  Future<List<RecordEntity>> getMonthData(int year, int month, int day) async {
+    List<RecordEntity> recordsDB = _map[month];
     if (recordsDB == null) {
       Logger.d(tag: TAG, msg: 'get RecordEntity from DB');
       await _recordDBProvider.open();
@@ -27,6 +28,12 @@ class RecordRepository {
     } else {
       Logger.d(tag: TAG, msg: 'get RecordEntity from Cahce');
     }
+    return recordsDB;
+  }
+
+  /// 获取单月所有花费
+  Future<int> getMonthAmount(int year, int month, int day) async {
+    List<RecordEntity> recordsDB = await getMonthData(year, month, day);
 
     var amount = 0.0;
     for (var item in recordsDB) {

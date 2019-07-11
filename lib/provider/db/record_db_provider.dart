@@ -27,7 +27,7 @@ class RecordDBProvider {
     }
 
     List<Map> query = await db.rawQuery(
-        'select * from mark_record where recordDateTime >= ? and recordDateTime <= ?',
+        'select * from mark_record where recordDateTime >= ? and recordDateTime <= ? ORDER BY recordDateTime DESC',
         [from, last]);
 
     var ret = List<RecordEntity>();
@@ -45,10 +45,9 @@ class RecordDBProvider {
 
   Future<List<RecordEntity>> getRecordByDay(
       int year, int month, int day) async {
-    var from =
-        new DateTime(year, month, day, 0, 0, 0).millisecondsSinceEpoch;
-    var last = new DateTime(year, month, day, 23, 59, 59)
-        .millisecondsSinceEpoch;
+    var from = new DateTime(year, month, day, 0, 0, 0).millisecondsSinceEpoch;
+    var last =
+        new DateTime(year, month, day, 23, 59, 59).millisecondsSinceEpoch;
     Logger.d(msg: "getRecordByDay from: $from , to $last");
 
     List<Map> query = await db.rawQuery(

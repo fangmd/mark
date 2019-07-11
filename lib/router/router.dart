@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mark/views/history/history_all.dart';
 import 'package:mark/views/home/home.dart';
 import 'package:mark/views/record/record.dart';
 import 'package:mark/views/setting/setting.dart';
@@ -11,6 +12,7 @@ Map<String, WidgetBuilder> buildRoutes() {
     HomePage.routeName: (_) => HomePage(),
     SettingPage.routeName: (_) => SettingPage(),
     RecordPage.routeName: (_) => RecordPage(),
+    HistoryAll.routeName: (_) => HistoryAll(),
   };
 }
 

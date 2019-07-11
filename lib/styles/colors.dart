@@ -2,6 +2,9 @@ import 'dart:ui';
 
 // test
 const Color text_black = Color(0xFF000000);
+const Color text_CCCCCC = Color(0xFFCCCCCC);
+const Color text_9C9B97 = Color(0xFF9C9B97);
+
 const Color text_purple = Color(0xff8C83C6);
 const Color text_green = Color(0xff61BB8C);
 const Color text_hint = Color(0xff666666);

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mark/router/router.dart';
 import 'package:mark/styles/colors.dart';
+import 'package:mark/utils/logger.dart';
 import 'package:mark/views/home/home.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -20,8 +21,9 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
+      Logger.d(msg: 'request Permission');
       PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.contacts)
+          .checkPermissionStatus(PermissionGroup.storage)
           .then((value) {
         if (value == PermissionStatus.granted) {
           this._canClose = true;

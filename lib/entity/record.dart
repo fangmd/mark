@@ -7,6 +7,7 @@ class RecordEntity {
   String type; // 账目类型TODO: 支持多个使用 & 分割
   double value; // 账目金额
   String comments; // 账目备注
+  String typeSI; // 类型：expenditure/income
 
   RecordEntity(
       {this.id,
@@ -14,7 +15,8 @@ class RecordEntity {
       this.recordDateTime,
       this.type,
       this.value,
-      this.comments});
+      this.comments,
+      this.typeSI});
 
   Map<String, dynamic> toMapDB() {
     var map = <String, dynamic>{
@@ -24,6 +26,7 @@ class RecordEntity {
       'type': type,
       'value': value,
       'comments': comments,
+      'typeSI' : typeSI,
     };
     return map;
   }
@@ -35,5 +38,6 @@ class RecordEntity {
     type = map["type"];
     value = map["value"];
     comments = map["comments"];
+    typeSI = map["typeSI"];
   }
 }
