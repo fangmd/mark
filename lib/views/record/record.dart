@@ -27,6 +27,7 @@ class _RecordPageState extends State<RecordPage> {
   List<RecordItemUIData> data = List<RecordItemUIData>();
 
   var showKeyboard = false;
+  String _currentTypeSI;
   ValueSetter<RecordEntity> recordSetter;
   OnCancel onCancel;
 
@@ -49,6 +50,7 @@ class _RecordPageState extends State<RecordPage> {
   Widget build(BuildContext context) {
     recordSetter = (RecordEntity record) {
       record.type = selectedRecordItemUIData.title;
+      record.typeSI = this._currentTypeSI;
       recordBloc.saveRecord(record).then((value) {
         Logger.d(msg: "save record success");
         Navigator.pop(context);
@@ -138,6 +140,7 @@ class _RecordPageState extends State<RecordPage> {
             this.selectedRecordItemUIData = data[index];
             setState(() {
               showKeyboard = true;
+              this._currentTypeSI = 'expenditure';
             });
           },
         );

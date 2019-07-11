@@ -67,7 +67,7 @@ class _KeyboardState extends State<Keyboard> {
         _createButton('7'),
         _createButton('8'),
         _createButton('9'),
-        _createButton('今天'),
+        _createButtonDate('今天'),
         _createButton('4'),
         _createButton('5'),
         _createButton('6'),
@@ -84,6 +84,44 @@ class _KeyboardState extends State<Keyboard> {
     );
   }
 
+  Future _selectDate() async {
+    DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(2016),
+        lastDate: new DateTime(2020));
+    if (picked != null) {
+      setState(() {
+        this.time = picked;
+      });
+    }
+  }
+
+  Widget _createButtonDate(String text) {
+    var timeStr = '今天';
+    var now = DateTime.now();
+    if (!(this.time.year == now.year &&
+        this.time.month == now.month &&
+        this.time.day == now.day)) {
+      timeStr = formatTime(date: this.time);
+    }
+
+    return GestureDetector(
+      onTap: _selectDate,
+      behavior: HitTestBehavior.opaque,
+      child: Center(
+        child: Text(
+          timeStr,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: timeStr == '今天' ? 18 : 16,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _createButton(String text) {
     return GestureDetector(
       onTap: () {
@@ -94,6 +132,11 @@ class _KeyboardState extends State<Keyboard> {
         child: Text(
           text,
           textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+            // fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );

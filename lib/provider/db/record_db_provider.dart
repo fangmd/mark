@@ -16,34 +16,18 @@ class RecordDBProvider {
     return card;
   }
 
-  Future<List<RecordEntity>> getAll() async {
-    // List<Map> maps = await db.query('zb_card');
-    // if (maps.length > 0) {
-    //   List<RecordEntity> retList = List<RecordEntity>();
-    //   for (Map map in maps) {
-    //     retList.add(RecordEntity.fromMapForDB(map));
-    //   }
-    //   return retList;
-    // }
-    // return List<RecordEntity>();
-  }
-
-  Future<List<RecordEntity>> getRecordByMonth(int month) async {
-    var from = new DateTime(DateTime.now().year, month, 1).toUtc().millisecondsSinceEpoch;
+  Future<List<RecordEntity>> getRecordByMonth(int year, int month) async {
+    var from = new DateTime(year, month, 1).millisecondsSinceEpoch;
     Logger.d(msg: "getRecordByMonth from: $from");
     var last;
     if (month == 12) {
-      last = new DateTime(DateTime.now().year + 1, 1, 1)
-          .toUtc()
-          .millisecondsSinceEpoch;
+      last = new DateTime(year + 1, 1, 1).millisecondsSinceEpoch;
     } else {
-      last = new DateTime(DateTime.now().year, month + 1, 1)
-          .toUtc()
-          .millisecondsSinceEpoch;
+      last = new DateTime(year, month + 1, 1).millisecondsSinceEpoch;
     }
 
     List<Map> query = await db.rawQuery(
-        'select * from mark_record where recordDateTime >= ? & recordDateTime <= ?',
+        'select * from mark_record where recordDateTime >= ? and recordDateTime <= ? ORDER BY recordDateTime DESC',
         [from, last]);
 
     var ret = List<RecordEntity>();
@@ -57,5 +41,23 @@ class RecordDBProvider {
 
   Future deleteAll() async {
     await db.delete('mark_record');
+  }
+
+  Future<List<RecordEntity>> getRecordByDay(
+      int year, int month, int day) async {
+    var from = new DateTime(year, month, day, 0, 0, 0).millisecondsSinceEpoch;
+    var last =
+        new DateTime(year, month, day, 23, 59, 59).millisecondsSinceEpoch;
+    Logger.d(msg: "getRecordByDay from: $from , to $last");
+
+    List<Map> query = await db.rawQuery(
+        'select * from mark_record where recordDateTime >= ? and recordDateTime <= ?',
+        [from, last]);
+
+    var ret = List<RecordEntity>();
+    for (var item in query) {
+      ret.add(RecordEntity.fromMapDB(item));
+    }
+    return ret;
   }
 }
