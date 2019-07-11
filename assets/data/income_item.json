@@ -1,0 +1,22 @@
+[
+  {
+    "title": "工资",
+    "image": "assets/images/record_item/salary.png"
+  },
+  {
+    "title": "理财",
+    "image": "assets/images/record_item/licaishouyi.png"
+  },
+  {
+    "title": "礼金",
+    "image": "assets/images/record_item/lijin.png"
+  },
+  {
+    "title": "兼职",
+    "image": "assets/images/record_item/jianzhi.png"
+  },
+  {
+    "title": "其他",
+    "image": "assets/images/record_item/qitashouru.png"
+  }
+]

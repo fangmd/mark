@@ -25,6 +25,7 @@ class _RecordPageState extends State<RecordPage> {
   );
   RecordItemUIData selectedRecordItemUIData;
   List<RecordItemUIData> data = List<RecordItemUIData>();
+  List<RecordItemUIData> _incomeData = List<RecordItemUIData>();
 
   var showKeyboard = false;
   String _currentTypeSI;
@@ -43,6 +44,13 @@ class _RecordPageState extends State<RecordPage> {
     var list = RecordItemUIData.fromJson(data);
     setState(() {
       this.data = list;
+    });
+
+    final dataIncome = json.decode(await DefaultAssetBundle.of(context)
+        .loadString("assets/data/income_item.json"));
+    var listIncome = RecordItemUIData.fromJson(dataIncome);
+    setState(() {
+      this._incomeData = listIncome;
     });
   }
 
@@ -109,17 +117,30 @@ class _RecordPageState extends State<RecordPage> {
   }
 
   GridView buildIncome() {
-    return GridView.count(
-      primary: false,
+    var gridView = GridView.builder(
       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      crossAxisSpacing: 10.0,
-      crossAxisCount: 4,
-      children: <Widget>[
-        RecordItem(
-            data: RecordItemUIData(
-                title: '长辈', image: 'assets/images/record_item/zhangbei.png')),
-      ],
+      itemCount: _incomeData.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisSpacing: 10.0, crossAxisCount: 4),
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          child: RecordItem(data: _incomeData[index]),
+          onTap: () {
+            Logger.d(msg: 'select reocrd item: ${_incomeData[index].title}');
+            for (var item in _incomeData) {
+              item.selected = false;
+            }
+            _incomeData[index].selected = true;
+            this.selectedRecordItemUIData = _incomeData[index];
+            setState(() {
+              showKeyboard = true;
+              this._currentTypeSI = 'income';
+            });
+          },
+        );
+      },
     );
+    return gridView;
   }
 
   GridView buildExpenditure() {

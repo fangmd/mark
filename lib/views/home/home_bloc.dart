@@ -11,7 +11,7 @@ class HomeBloc {
     if (month == null) {
       month = DateTime.now().month;
     }
-    return await _recordRepository.getMonthAmount(
+    return await _recordRepository.getMonthAmountExpend(
         year, month, DateTime.now().day);
   }
 

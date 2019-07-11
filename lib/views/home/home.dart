@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '本月支出',
+            '本月',
             style: TextStyle(color: text_purple, fontSize: 14),
           ),
           Padding(
