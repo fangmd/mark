@@ -9,6 +9,10 @@ class RecordRepository {
   RecordProvider _recordProvider = RecordProvider();
   Map<int, List<RecordEntity>> _map = new Map<int, List<RecordEntity>>();
 
+  RecordRepository() {
+    _recordDBProvider.open();
+  }
+
   Future<RecordEntity> saveRecord(RecordEntity record) async {
     await _recordDBProvider.open();
     RecordEntity recordDb = await _recordDBProvider.insert(record);
@@ -75,5 +79,9 @@ class RecordRepository {
     }
     Logger.d(tag: TAG, msg: 'Record Day Amount is $amount');
     return [amount.toInt(), recordsDB];
+  }
+
+  closeDb() async {
+    // await _recordDBProvider.close();
   }
 }

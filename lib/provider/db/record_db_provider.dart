@@ -37,7 +37,9 @@ class RecordDBProvider {
     return ret;
   }
 
-  Future close() async => db.close();
+  Future close() async {
+    // db.close();
+  }
 
   Future deleteAll() async {
     await db.delete('mark_record');

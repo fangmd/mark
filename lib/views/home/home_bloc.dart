@@ -1,8 +1,15 @@
+import 'package:mark/components/chart/data.dart';
 import 'package:mark/entity/record.dart';
 import 'package:mark/repository/RecordRepository.dart';
+import 'package:rxdart/rxdart.dart';
 
 class HomeBloc {
   final RecordRepository _recordRepository = RecordRepository();
+
+  final BehaviorSubject<List<Point>> _pointSubject =
+      BehaviorSubject<List<Point>>();
+
+  BehaviorSubject<List<Point>> get pointSubject => _pointSubject;
 
   Future<int> getMonthExpand({int year, int month}) async {
     if (year == null) {
@@ -31,5 +38,27 @@ class HomeBloc {
     return list;
   }
 
-  dispose() {}
+  Future<List<Point>> getWeekPoint() async {
+    print(DateTime.now().weekday);
+    DateTime day = DateTime.now();
+    int weekday = day.weekday;
+    List<Point> points = List<Point>();
+    Point point;
+    for (var i = 1; i <= weekday; i++) {
+      List listD = await _recordRepository.getDayExpend(
+          year: day.year, month: day.month, day: day.day);
+      point = Point(
+          x: i-1,
+          y: listD[0].toDouble(),
+          xText: '${day.weekday}',
+          yText: '${listD[0]}');
+      points.add(point);
+    }
+    _pointSubject.sink.add(points);
+    return points;
+  }
+
+  dispose() {
+    _pointSubject.close();
+  }
 }

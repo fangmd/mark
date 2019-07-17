@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mark/components/bottom_settings.dart';
+import 'package:mark/components/chart/data.dart';
+import 'package:mark/components/chart/line_chart.dart';
 import 'package:mark/entity/record.dart';
-import 'package:mark/manager/file_manager.dart';
 import 'package:mark/styles/colors.dart';
+import 'package:mark/styles/styles.dart';
 import 'package:mark/utils/logger.dart';
 import 'package:mark/utils/project_utils.dart';
+import 'package:mark/utils/time_utils.dart';
 import 'package:mark/views/home/home_bloc.dart';
 import 'day_widget.dart';
 
@@ -22,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   var _dayExpend = "";
   var _dayRecordEntity = List<RecordEntity>();
   var _dayRecordEntityImg = List<String>();
+  List<Point> _weekDatas = List<Point>();
 
   @override
   void initState() {
@@ -57,12 +62,17 @@ class _HomePageState extends State<HomePage> {
       Logger.d(msg: '$error');
     });
 
+    homeBloc.getWeekPoint().then((value) {
+      setState(() {
+        this._weekDatas = value;
+      });
+    }).catchError((error) {});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var scaffold = Scaffold(
       body: Container(
         constraints: BoxConstraints(minHeight: double.infinity),
         child: Stack(
@@ -74,6 +84,14 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+      child: scaffold,
+    );
+    // return scaffold;
   }
 
   _buildBg() {
@@ -84,14 +102,14 @@ class _HomePageState extends State<HomePage> {
 
   _buildBody(BuildContext context) {
     return Positioned(
-      top: 90,
+      top: 40,
       left: 0,
       right: 0,
       bottom: 0,
       child: Container(
         child: ListView(
-          padding: EdgeInsets.all(0.0),
           children: <Widget>[
+            _buildTime(),
             _buildSummary(),
             SizedBox(height: 20.0),
             DayWidget(
@@ -99,6 +117,7 @@ class _HomePageState extends State<HomePage> {
               dayRecordEntity: _dayRecordEntity,
               dayRecordEntityImg: _dayRecordEntityImg,
             ),
+            _buildGraph(),
           ],
         ),
       ),
@@ -112,7 +131,7 @@ class _HomePageState extends State<HomePage> {
         color: Colors.white,
       ),
       height: 120,
-      margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
+      margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
       padding: EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,5 +209,62 @@ class _HomePageState extends State<HomePage> {
     }
 
     return source;
+  }
+
+  Widget _buildTime() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, bottom: 20),
+      child: Text(formatTime(pattern: 'MM/dd'), style: AppTheme.pageTitle),
+    );
+  }
+
+  Widget _buildGraph() {
+    // List<Point> data = List<Point>();
+    // for (var i = 0; i < 30; i++) {
+    //   if (i % 7 == 0) {
+    //     data.add(Point(x: i, y: 0));
+    //   } else {
+    //     data.add(Point(x: i, y: 55));
+    //   }
+    // }
+
+    return Container(
+      padding: EdgeInsets.only(left: 0, right: 0, bottom: 20),
+      margin: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        color: Colors.white,
+      ),
+      child: Column(
+        children: <Widget>[
+          Container(
+            height: 40,
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 20.0),
+                Image.asset(
+                  'assets/images/home/statistics.png',
+                  width: 16,
+                  height: 16,
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(width: 10.0),
+                Text('图表', style: AppTheme.home_card_title),
+                Expanded(child: SizedBox()),
+                Text('本周', style: AppTheme.home_card_title),
+                SizedBox(width: 16)
+              ],
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: 220,
+            child: CustomPaint(
+              painter: LineChartPainter(_weekDatas),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

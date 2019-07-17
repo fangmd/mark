@@ -78,4 +78,8 @@ class HistoryBloc {
     }
     return ret;
   }
+
+  dispose() {
+    // _repository.closeDb();
+  }
 }
