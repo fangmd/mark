@@ -40,15 +40,17 @@ class HomeBloc {
 
   Future<List<Point>> getWeekPoint() async {
     print(DateTime.now().weekday);
-    DateTime day = DateTime.now();
-    int weekday = day.weekday;
+    DateTime dayNow = DateTime.now();
+    int weekday = dayNow.weekday;
     List<Point> points = List<Point>();
     Point point;
     for (var i = 1; i <= weekday; i++) {
+      DateTime day = dayNow.subtract(Duration(days: weekday - i));
+
       List listD = await _recordRepository.getDayExpend(
           year: day.year, month: day.month, day: day.day);
       point = Point(
-          x: i-1,
+          x: i - 1,
           y: listD[0].toDouble(),
           xText: '${day.weekday}',
           yText: '${listD[0]}');

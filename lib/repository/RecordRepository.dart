@@ -77,7 +77,7 @@ class RecordRepository {
         amount += item.value;
       }
     }
-    Logger.d(tag: TAG, msg: 'Record Day Amount is $amount');
+    Logger.d(tag: TAG, msg: 'Record Day: $day Amount is $amount');
     return [amount.toInt(), recordsDB];
   }
 

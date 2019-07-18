@@ -19,11 +19,17 @@ class LineChartPainter extends CustomPainter {
   double gHeight;
   double gWidth;
 
+  /// x 轴坐标是否从 0 开始，true: 0, false: 动态
+  bool setXAxisStartFromZero = false;
+
   /// data 需要按照 x 轴排列
   LineChartPainter(this.data) {
     _yRange = YRange();
     double min = 0;
     double max = 0;
+    if (data.length > 0 && !setXAxisStartFromZero) {
+      min = data[0].y;
+    }
     for (var item in data) {
       min = min < item.y ? min : item.y;
       max = max > item.y ? max : item.y;
@@ -57,13 +63,11 @@ class LineChartPainter extends CustomPainter {
 
     canvas.drawRect(Rect.fromLTRB(0, 0, size.width, size.height), paint);
 
-    yUnit = gHeight / (_yRange.max);
+    yUnit = gHeight / (_yRange.max - _yRange.min);
     xUnit = gWidth / (data.length - 1);
 
-    Offset last = Offset(0 + padding + axisWidth, gHeight + padding);
-
     // draw line
-    drawLine(canvas, last, linePaint);
+    drawLine(canvas, linePaint);
 
     // draw Max, Min Point
     Point max = getMax(data);
@@ -87,22 +91,22 @@ class LineChartPainter extends CustomPainter {
     double textHeight = 12;
     // draw min acis Text
     drawXText(min, canvas, Offset(padding - 14, gHeight + 6));
-    drawXText(max, canvas, Offset(padding - 14, gHeight + 6 - yUnit * max.y));
+    drawXText(max, canvas, Offset(padding - 14, gHeight + 6 - yUnit * (_yRange.max - _yRange.min)));
   }
 
   /// draw graph line
-  void drawLine(Canvas canvas, Offset last, Paint linePaint) {
+  void drawLine(Canvas canvas, Paint linePaint) {
     Point first = data[0];
     Offset last = Offset(first.x * xUnit + padding + axisWidth,
-        gHeight - first.y * yUnit + padding);
+        gHeight - (first.y - _yRange.min) * yUnit + padding);
     for (Point d in data) {
       canvas.drawLine(
           last,
           Offset(d.x * xUnit + padding + axisWidth,
-              gHeight - d.y * yUnit + padding),
+              gHeight - (d.y - _yRange.min) * yUnit + padding),
           linePaint);
-      last = Offset(
-          d.x * xUnit + padding + axisWidth, gHeight - d.y * yUnit + padding);
+      last = Offset(d.x * xUnit + padding + axisWidth,
+          gHeight - (d.y - _yRange.min) * yUnit + padding);
 
       drawPoint(d, canvas);
     }
@@ -157,7 +161,7 @@ class LineChartPainter extends CustomPainter {
       ..strokeCap = StrokeCap.square;
 
     Offset offset = Offset(point.x * xUnit + padding + axisWidth,
-        gHeight - point.y * yUnit + padding);
+        gHeight - (point.y - _yRange.min) * yUnit + padding);
     canvas.drawCircle(offset, 6, pointPaint);
   }
 
