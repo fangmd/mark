@@ -91,7 +91,17 @@ class LineChartPainter extends CustomPainter {
     double textHeight = 12;
     // draw min acis Text
     drawXText(min, canvas, Offset(padding - 14, gHeight + 6));
-    drawXText(max, canvas, Offset(padding - 14, gHeight + 6 - yUnit * (_yRange.max - _yRange.min)));
+    Point mid = Point(y: (_yRange.max + _yRange.min) / 2);
+    drawXText(
+        mid,
+        canvas,
+        Offset(padding - 14,
+            gHeight + 6 - yUnit * ((_yRange.max - _yRange.min) / 2)));
+    drawXText(
+        max,
+        canvas,
+        Offset(
+            padding - 14, gHeight + 6 - yUnit * (_yRange.max - _yRange.min)));
   }
 
   /// draw graph line
