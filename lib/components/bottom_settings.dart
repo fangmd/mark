@@ -15,7 +15,7 @@ class BottomSettings extends StatelessWidget {
             RouterUtils.pushNamed(context, HistoryAll.routeName);
           },
           child: Container(
-            width: 34,
+            width: 40,
             child: Padding(
               padding: EdgeInsets.all(4.0),
               child: Image.asset('assets/images/home/ic-list.png'),
@@ -33,7 +33,7 @@ class BottomSettings extends StatelessWidget {
             RouterUtils.pushNamed(context, SettingPage.routeName);
           },
           child: Padding(
-            padding: EdgeInsets.all(4.0),
+            padding: EdgeInsets.all(5.0),
             child: SizedBox(
               width: 26,
               height: 26,

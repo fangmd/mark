@@ -23,8 +23,11 @@ class _RecordPageState extends State<RecordPage> {
   final controller = PageController(
     initialPage: 0,
   );
+  // selectedRecordItemUIData, selectedRecordItemUIDataInCome 同时存在是因为，无法在 Tab 切换的时候设置监听，设置了监听但是效果不好(监听是滞后的)
   RecordItemUIData selectedRecordItemUIData;
+  RecordItemUIData selectedRecordItemUIDataInCome;
   List<RecordItemUIData> data = List<RecordItemUIData>();
+  List<RecordItemUIData> _incomeData = List<RecordItemUIData>();
 
   var showKeyboard = false;
   String _currentTypeSI;
@@ -43,6 +46,13 @@ class _RecordPageState extends State<RecordPage> {
     var list = RecordItemUIData.fromJson(data);
     setState(() {
       this.data = list;
+    });
+
+    final dataIncome = json.decode(await DefaultAssetBundle.of(context)
+        .loadString("assets/data/income_item.json"));
+    var listIncome = RecordItemUIData.fromJson(dataIncome);
+    setState(() {
+      this._incomeData = listIncome;
     });
   }
 
@@ -71,14 +81,36 @@ class _RecordPageState extends State<RecordPage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 40,
-                  child: TabBar(
-                    indicatorColor: Colors.black,
-                    tabs: <Widget>[
-                      Text('支出',
-                          style: TextStyle(fontSize: 16, color: text_black)),
-                      Text('收入',
-                          style: TextStyle(fontSize: 16, color: text_black)),
+                  height: 46,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(Icons.arrow_back),
+                        iconSize: 24,
+                        color: Colors.black,
+                      ),
+                      Container(
+                        height: 46,
+                        width: 200,
+                        child: TabBar(
+                          indicatorColor: Colors.black,
+                          tabs: <Widget>[
+                            Container(
+                              child: Text('支出',
+                                  style: TextStyle(
+                                      fontSize: 16, color: text_black)),
+                            ),
+                            Text('收入',
+                                style:
+                                    TextStyle(fontSize: 16, color: text_black)),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 24),
                     ],
                   ),
                 ),
@@ -109,17 +141,30 @@ class _RecordPageState extends State<RecordPage> {
   }
 
   GridView buildIncome() {
-    return GridView.count(
-      primary: false,
+    var gridView = GridView.builder(
       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      crossAxisSpacing: 10.0,
-      crossAxisCount: 4,
-      children: <Widget>[
-        RecordItem(
-            data: RecordItemUIData(
-                title: '长辈', image: 'assets/images/record_item/zhangbei.png')),
-      ],
+      itemCount: _incomeData.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisSpacing: 10.0, crossAxisCount: 4),
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          child: RecordItem(data: _incomeData[index]),
+          onTap: () {
+            Logger.d(msg: 'select reocrd item: ${_incomeData[index].title}');
+            for (var item in _incomeData) {
+              item.selected = false;
+            }
+            _incomeData[index].selected = true;
+            this.selectedRecordItemUIDataInCome = _incomeData[index];
+            setState(() {
+              showKeyboard = true;
+              this._currentTypeSI = 'income';
+            });
+          },
+        );
+      },
     );
+    return gridView;
   }
 
   GridView buildExpenditure() {

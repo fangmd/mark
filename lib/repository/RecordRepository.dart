@@ -9,6 +9,10 @@ class RecordRepository {
   RecordProvider _recordProvider = RecordProvider();
   Map<int, List<RecordEntity>> _map = new Map<int, List<RecordEntity>>();
 
+  RecordRepository() {
+    _recordDBProvider.open();
+  }
+
   Future<RecordEntity> saveRecord(RecordEntity record) async {
     await _recordDBProvider.open();
     RecordEntity recordDb = await _recordDBProvider.insert(record);
@@ -32,12 +36,12 @@ class RecordRepository {
   }
 
   /// 获取单月所有花费
-  Future<int> getMonthAmount(int year, int month, int day) async {
+  Future<int> getMonthAmountExpend(int year, int month, int day) async {
     List<RecordEntity> recordsDB = await getMonthData(year, month, day);
 
     var amount = 0.0;
     for (var item in recordsDB) {
-      if (item.value != null) {
+      if (item.value != null && item.typeSI == 'expenditure') {
         amount += item.value;
       }
     }
@@ -58,6 +62,9 @@ class RecordRepository {
       Logger.d(tag: TAG, msg: 'get RecordEntity from DB');
       await _recordDBProvider.open();
       recordsDB = await _recordDBProvider.getRecordByDay(year, month, day);
+      // export income item
+      recordsDB.removeWhere((item) => item.typeSI != 'expenditure');
+      //
       await _recordDBProvider.close();
       _map[day] = recordsDB;
     } else {
@@ -66,11 +73,15 @@ class RecordRepository {
 
     var amount = 0.0;
     for (var item in recordsDB) {
-      if (item.value != null) {
+      if (item.value != null && item.typeSI == 'expenditure') {
         amount += item.value;
       }
     }
-    Logger.d(tag: TAG, msg: 'Record Day Amount is $amount');
+    Logger.d(tag: TAG, msg: 'Record Day: $day Amount is $amount');
     return [amount.toInt(), recordsDB];
+  }
+
+  closeDb() async {
+    // await _recordDBProvider.close();
   }
 }

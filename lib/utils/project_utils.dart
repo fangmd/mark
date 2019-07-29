@@ -9,6 +9,11 @@ Future<String> getImgFromType(BuildContext context, String type) async {
   final data = json.decode(await DefaultAssetBundle.of(context)
       .loadString("assets/data/record_item.json"));
   var list = RecordItemUIData.fromJson(data);
+  
+  final dataIncome = json.decode(await DefaultAssetBundle.of(context)
+      .loadString("assets/data/income_item.json"));
+  var listInCome = RecordItemUIData.fromJson(dataIncome);
+  list.addAll(listInCome);
 
   var ret;
   list.forEach((v) {
@@ -23,11 +28,15 @@ Future<String> getImgFromType(BuildContext context, String type) async {
   return ret;
 }
 
-Future<HashMap<String, String>> getImgFromTypeMap(
-    BuildContext context) async {
+Future<HashMap<String, String>> getImgFromTypeMap(BuildContext context) async {
   final data = json.decode(await DefaultAssetBundle.of(context)
       .loadString("assets/data/record_item.json"));
   var list = RecordItemUIData.fromJson(data);
+
+  final dataIncome = json.decode(await DefaultAssetBundle.of(context)
+      .loadString("assets/data/income_item.json"));
+  var listInCome = RecordItemUIData.fromJson(dataIncome);
+  list.addAll(listInCome);
 
   HashMap<String, String> map = HashMap<String, String>();
 

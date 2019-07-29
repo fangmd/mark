@@ -34,83 +34,95 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Text.rich(TextSpan(
-                text: '设置',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-                children: [
-                  TextSpan(
-                    text: '  (v$versionName)',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ])),
-          ),
-          SizedBox(
-            height: 40.0,
-          ),
-          Container(
-            height: 30.0,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: white_02,
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+                size: 24.0,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 20.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '数据管理',
+            Padding(
+              padding: EdgeInsets.only(left: 30, top: 10),
+              child: Text.rich(TextSpan(
+                  text: '设置',
                   style: TextStyle(
-                    color: text_hint,
-                    fontSize: 12,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: '  (v$versionName)',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ])),
+            ),
+            SizedBox(
+              height: 40.0,
+            ),
+            Container(
+              height: 30.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: white_02,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '数据管理',
+                    style: TextStyle(
+                      color: text_hint,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          InkWell(
-            child: _buildItem('清理App数据(不包括备份数据)', first: true),
-            onTap: () {
-              this._showClearDialog(context);
-            },
-          ),
-          InkWell(
-            child: _buildItem('清理本地备份数据'),
-            onTap: () {
-              this._showClearDBDialog(context);
-            },
-          ),
-          InkWell(
-            child: _buildItem('备份数据到本地'),
-            onTap: () {
-              FileManager().backupDB().then((value) {
-                if (value) {
-                  Toast.show('备份数据成功', context);
-                } else {
+            InkWell(
+              child: _buildItem('清理App数据(不包括备份数据)', first: true),
+              onTap: () {
+                this._showClearDialog(context);
+              },
+            ),
+            InkWell(
+              child: _buildItem('清理本地备份数据'),
+              onTap: () {
+                this._showClearDBDialog(context);
+              },
+            ),
+            InkWell(
+              child: _buildItem('备份数据到本地'),
+              onTap: () {
+                FileManager().backupDB().then((value) {
+                  if (value) {
+                    Toast.show('备份数据成功', context);
+                  } else {
+                    Toast.show('备份数据失败', context);
+                  }
+                }).catchError((error) {
                   Toast.show('备份数据失败', context);
-                }
-              }).catchError((error) {
-                Toast.show('备份数据失败', context);
-              });
-            },
-          ),
-          InkWell(
-            child: _buildItem('从本地恢复数据'),
-            onTap: () {
-              this._showRestoreDialog(context);
-            },
-          ),
-        ],
+                });
+              },
+            ),
+            InkWell(
+              child: _buildItem('从本地恢复数据'),
+              onTap: () {
+                this._showRestoreDialog(context);
+              },
+            ),
+          ],
+        ),
       ),
     ));
   }
@@ -145,14 +157,17 @@ class _SettingPageState extends State<SettingPage> {
       height: 1.0,
     ));
 
-    return Padding(
-      padding: EdgeInsets.only(left: 20, right: 20),
-      child: Container(
-        height: 50,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: widgets,
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: Container(
+          height: 50,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widgets,
+          ),
         ),
       ),
     );
