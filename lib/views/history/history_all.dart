@@ -52,9 +52,12 @@ class _HistoryAllState extends State<HistoryAll> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          child: _buildList(context),
+      body: Container(
+        color: Colors.white,
+        child: SafeArea(
+          child: Container(
+            child: _buildList(context),
+          ),
         ),
       ),
     );
