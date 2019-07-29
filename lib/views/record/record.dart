@@ -23,7 +23,9 @@ class _RecordPageState extends State<RecordPage> {
   final controller = PageController(
     initialPage: 0,
   );
+  // selectedRecordItemUIData, selectedRecordItemUIDataInCome 同时存在是因为，无法在 Tab 切换的时候设置监听，设置了监听但是效果不好(监听是滞后的)
   RecordItemUIData selectedRecordItemUIData;
+  RecordItemUIData selectedRecordItemUIDataInCome;
   List<RecordItemUIData> data = List<RecordItemUIData>();
   List<RecordItemUIData> _incomeData = List<RecordItemUIData>();
 
@@ -131,7 +133,7 @@ class _RecordPageState extends State<RecordPage> {
               item.selected = false;
             }
             _incomeData[index].selected = true;
-            this.selectedRecordItemUIData = _incomeData[index];
+            this.selectedRecordItemUIDataInCome = _incomeData[index];
             setState(() {
               showKeyboard = true;
               this._currentTypeSI = 'income';

@@ -70,5 +70,13 @@
   {
     "title": "汽车",
     "image": "assets/images/record_item/qiche.png"
+  },
+  {
+    "title": "护肤",
+    "image": "assets/images/record_item/hufu.png"
+  },
+  {
+    "title": "丽人",
+    "image": "assets/images/record_item/liren.png"
   }
 ]

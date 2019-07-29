@@ -10,17 +10,22 @@ class LineChartPainter extends CustomPainter {
   YRange _yRange;
   double yUnit;
   double xUnit;
-  double padding;
+  double padding = 14;
+  double yTextWidth = 28; //
 
   /// x 轴坐标预留位置
-  double axisWidth = 30;
+  double axisWidth = 35;
 
   /// 绘制表哥区域的宽高
   double gHeight;
   double gWidth;
 
+  /// 控件的宽高
+  double height;
+  double width;
+
   /// x 轴坐标是否从 0 开始，true: 0, false: 动态
-  bool setXAxisStartFromZero = false;
+  bool setXAxisStartFromZero = true;
 
   /// data 需要按照 x 轴排列
   LineChartPainter(this.data) {
@@ -43,11 +48,10 @@ class LineChartPainter extends CustomPainter {
     if (data == null || data.length <= 0) {
       return;
     }
-    var height = size.height;
-    var width = size.width;
+    height = size.height;
+    width = size.width;
 
     // add padding to canvas 15,
-    padding = 16;
     gHeight = height - padding * 2;
     gWidth = width - padding * 2 - axisWidth;
 
@@ -63,49 +67,54 @@ class LineChartPainter extends CustomPainter {
 
     canvas.drawRect(Rect.fromLTRB(0, 0, size.width, size.height), paint);
 
-    yUnit = gHeight / (_yRange.max - _yRange.min);
-    xUnit = gWidth / (data.length - 1);
+    if (data.length <= 1) {
+      yUnit = gHeight / (_yRange.max * 2);
+      xUnit = 0;
+    } else {
+      yUnit = gHeight / (_yRange.max - _yRange.min);
+      xUnit = gWidth / (data.length - 1);
+    }
 
     // draw line
-    drawLine(canvas, linePaint);
+    drawLineAndPoint(canvas, linePaint);
 
     // draw Max, Min Point
     Point max = getMax(data);
     Point min = getMin(data);
-    drawPoint(max, canvas);
-    drawPoint(min, canvas);
+    // drawPoint(max, canvas);
+    // drawPoint(min, canvas);
 
     // draw min, max Text
     // drawPointText(max, canvas, )
 
-    // draw X axis
+    // draw Y axis
     var axisPaint = Paint()
       ..color = text_purple
       ..strokeWidth = 2
       ..strokeCap = StrokeCap.square;
-    Offset xBottom = Offset(0 + padding + 20, gHeight + padding + 6);
-    Offset xTop = Offset(0 + padding + 20, 0 + padding - 6);
+    Offset xBottom = Offset(0 + padding + yTextWidth, gHeight + padding + 6);
+    Offset xTop = Offset(0 + padding + yTextWidth, 0 + padding - 6);
     canvas.drawLine(xBottom, xTop, axisPaint);
 
     // draw x axis Text
     double textHeight = 12;
     // draw min acis Text
-    drawXText(min, canvas, Offset(padding - 14, gHeight + 6));
-    Point mid = Point(y: (_yRange.max + _yRange.min) / 2);
+    drawXText(min, canvas, Offset(padding - 4, gHeight + 6));
+    Point mid = Point(y: ((_yRange.max + _yRange.min) / 2));
     drawXText(
         mid,
         canvas,
-        Offset(padding - 14,
+        Offset(padding - 4,
             gHeight + 6 - yUnit * ((_yRange.max - _yRange.min) / 2)));
-    drawXText(
-        max,
-        canvas,
-        Offset(
-            padding - 14, gHeight + 6 - yUnit * (_yRange.max - _yRange.min)));
+    drawXText(max, canvas,
+        Offset(padding - 4, gHeight + 6 - yUnit * (_yRange.max - _yRange.min)));
+
+    // Test:
+    // drawPadding(canvas);
   }
 
   /// draw graph line
-  void drawLine(Canvas canvas, Paint linePaint) {
+  void drawLineAndPoint(Canvas canvas, Paint linePaint) {
     Point first = data[0];
     Offset last = Offset(first.x * xUnit + padding + axisWidth,
         gHeight - (first.y - _yRange.min) * yUnit + padding);
@@ -155,7 +164,7 @@ class LineChartPainter extends CustomPainter {
 
   /// get Min Point from data
   Point getMin(List<Point> data) {
-    Point min = data[0];
+    Point min = Point(x: 0, y: 0, xText: '0.0', yText: '0.00');
     for (var d in data) {
       if (min.y > d.y) {
         min = d;
@@ -167,15 +176,34 @@ class LineChartPainter extends CustomPainter {
   void drawPoint(Point point, Canvas canvas) {
     var pointPaint = Paint()
       ..color = text_purple
-      ..strokeWidth = 4
+      ..strokeWidth = 3
       ..strokeCap = StrokeCap.square;
 
     Offset offset = Offset(point.x * xUnit + padding + axisWidth,
         gHeight - (point.y - _yRange.min) * yUnit + padding);
-    canvas.drawCircle(offset, 6, pointPaint);
+    canvas.drawCircle(offset, 5, pointPaint);
   }
 
   void drawXText(Point min, Canvas canvas, Offset offset) {
-    canvas.drawParagraph(buildParagraph('${min.y}', 12, 30), offset);
+    canvas.drawParagraph(
+        buildParagraph('${min.y.toInt()}', 10, yTextWidth), offset);
+  }
+
+  void drawPadding(Canvas canvas) {
+    var pointPaint = Paint()
+      ..color = text_purple
+      ..strokeWidth = 1
+      ..strokeCap = StrokeCap.square;
+
+    // canvas.drawRect(Rect.fromLTRB(0, 0, width, height), pointPaint);
+
+    canvas.drawLine(Offset(padding, padding), Offset(padding, height - padding),
+        pointPaint);
+    canvas.drawLine(Offset(padding, height - padding),
+        Offset(width - padding, height - padding), pointPaint);
+    canvas.drawLine(Offset(width - padding, height - padding),
+        Offset(width - padding, padding), pointPaint);
+    canvas.drawLine(
+        Offset(width - padding, padding), Offset(padding, padding), pointPaint);
   }
 }

@@ -219,17 +219,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildGraph() {
-    // List<Point> data = List<Point>();
-    // for (var i = 0; i < 30; i++) {
-    //   if (i % 7 == 0) {
-    //     data.add(Point(x: i, y: 0));
-    //   } else {
-    //     data.add(Point(x: i, y: 55));
-    //   }
-    // }
-
     return Container(
-      padding: EdgeInsets.only(left: 0, right: 0, bottom: 20),
+      padding: EdgeInsets.only(left: 0, right: 0, bottom: 10),
       margin: EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
