@@ -45,7 +45,6 @@ class _HistoryAllState extends State<HistoryAll> {
     });
 
     items = List<HistoryItem>();
-    items.add(HistoryItem(0));
     _refresh();
     super.initState();
   }
@@ -55,7 +54,6 @@ class _HistoryAllState extends State<HistoryAll> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          color: Colors.white,
           child: _buildList(context),
         ),
       ),
@@ -63,33 +61,49 @@ class _HistoryAllState extends State<HistoryAll> {
   }
 
   _buildList(BuildContext context) {
-    return RefreshIndicator(
-      child: ListView.builder(
-        controller: _controller,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          var data = items[index];
-          switch (items[index].type) {
-            case 0:
-              return _buildHeader();
-            case 1:
-              return _buildItemHeader(data);
-            case 2:
-              return _buildItem(data);
-            default:
-          }
-          return Text('Error');
-        },
-      ),
-      onRefresh: _refresh,
+    return Column(
+      children: <Widget>[
+        _buildHeader(context),
+        Expanded(
+          child: RefreshIndicator(
+            child: ListView.builder(
+              controller: _controller,
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                var data = items[index];
+                switch (items[index].type) {
+                  case 1:
+                    return _buildItemHeader(data);
+                  case 2:
+                    return _buildItem(data);
+                  default:
+                }
+                return Text('Error');
+              },
+            ),
+            onRefresh: _refresh,
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Text('流水',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back),
+            iconSize: 24,
+            color: Colors.black),
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0, top: 10, bottom: 10),
+          child: Text('流水',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        ),
+      ],
     );
   }
 

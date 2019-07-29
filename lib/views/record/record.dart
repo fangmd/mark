@@ -81,14 +81,36 @@ class _RecordPageState extends State<RecordPage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 40,
-                  child: TabBar(
-                    indicatorColor: Colors.black,
-                    tabs: <Widget>[
-                      Text('支出',
-                          style: TextStyle(fontSize: 16, color: text_black)),
-                      Text('收入',
-                          style: TextStyle(fontSize: 16, color: text_black)),
+                  height: 46,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: Icon(Icons.arrow_back),
+                        iconSize: 24,
+                        color: Colors.black,
+                      ),
+                      Container(
+                        height: 46,
+                        width: 200,
+                        child: TabBar(
+                          indicatorColor: Colors.black,
+                          tabs: <Widget>[
+                            Container(
+                              child: Text('支出',
+                                  style: TextStyle(
+                                      fontSize: 16, color: text_black)),
+                            ),
+                            Text('收入',
+                                style:
+                                    TextStyle(fontSize: 16, color: text_black)),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 24),
                     ],
                   ),
                 ),
