@@ -8,6 +8,7 @@ class RecordRepository {
   RecordDBProvider _recordDBProvider = RecordDBProvider();
   RecordProvider _recordProvider = RecordProvider();
   Map<int, List<RecordEntity>> _map = new Map<int, List<RecordEntity>>();
+  Map<int, List<RecordEntity>> _mapMonth = new Map<int, List<RecordEntity>>();
 
   RecordRepository() {
     _recordDBProvider.open();
@@ -22,13 +23,13 @@ class RecordRepository {
 
   /// 获取单月记录
   Future<List<RecordEntity>> getMonthData(int year, int month, int day) async {
-    List<RecordEntity> recordsDB = _map[month];
+    List<RecordEntity> recordsDB = _mapMonth[month];
     if (recordsDB == null) {
       Logger.d(tag: TAG, msg: 'get RecordEntity from DB');
       await _recordDBProvider.open();
       recordsDB = await _recordDBProvider.getRecordByMonth(year, month);
       await _recordDBProvider.close();
-      _map[day] = recordsDB;
+      _mapMonth[month] = recordsDB;
     } else {
       Logger.d(tag: TAG, msg: 'get RecordEntity from Cahce');
     }

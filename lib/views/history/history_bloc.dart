@@ -33,7 +33,7 @@ class HistoryBloc {
       }).toList();
       retList.addAll(itemData);
 
-      cnt = data.length;
+      cnt += data.length;
       now = getLastMonth(now);
       time = now;
     }

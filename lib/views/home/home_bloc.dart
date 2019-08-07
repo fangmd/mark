@@ -44,7 +44,7 @@ class HomeBloc {
     int weekday = dayNow.weekday;
     List<Point> points = List<Point>();
     Point point;
-    for (var i = 1; i <= weekday; i++) {
+    for (var i = 1; i <= 7; i++) {
       DateTime day = dayNow.subtract(Duration(days: weekday - i));
 
       List listD = await _recordRepository.getDayExpend(
