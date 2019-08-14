@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mark/entity/backup_db.dart';
 import 'package:mark/manager/db_manager.dart';
 import 'package:mark/manager/file_manager.dart';
+import 'package:mark/manager/local_auth_manager.dart';
 import 'package:mark/styles/colors.dart';
 import 'package:mark/utils/logger.dart';
 import 'package:package_info/package_info.dart';
@@ -19,6 +20,7 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   String versionName;
+  bool isLocalAuth = false;
 
   @override
   void initState() {
@@ -26,6 +28,12 @@ class _SettingPageState extends State<SettingPage> {
     PackageInfo.fromPlatform().then((packageInfo) {
       setState(() {
         this.versionName = packageInfo.version;
+      });
+    });
+
+    LocalAuthManager.getLocalAuthState().then((value) {
+      setState(() {
+        this.isLocalAuth = value;
       });
     });
   }
@@ -121,6 +129,32 @@ class _SettingPageState extends State<SettingPage> {
                 this._showRestoreDialog(context);
               },
             ),
+            Container(
+              height: 30.0,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: white_02,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'App 安全',
+                    style: TextStyle(
+                      color: text_hint,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              child: _buildSwitchItem('指纹识别/人脸识别', first: true),
+              onTap: () {
+                setLocalAuth(!this.isLocalAuth);
+              },
+            )
           ],
         ),
       ),
@@ -238,7 +272,7 @@ class _SettingPageState extends State<SettingPage> {
                 child: Text('确认'),
                 onPressed: () {
                   if (selectFileEntity != null) {
-                    //TODO 检查数据库版本号，版本号不符合就不能恢复
+                    //TODO 检查数据库版本�����，版本号不符合就不能恢复
                     FileManager().restoreDB(selected).then((value) {
                       Toast.show('数据恢复成功', context);
                       Navigator.of(context).pop();
@@ -315,5 +349,64 @@ class _SettingPageState extends State<SettingPage> {
             ),
           );
         });
+  }
+
+  Widget _buildSwitchItem(String name, {bool first}) {
+    var widgets = List<Widget>();
+    if (!first) {
+      widgets.add(Container(
+        decoration: BoxDecoration(color: bg_divide),
+        child: SizedBox(
+          width: double.infinity,
+          height: 1.0,
+        ),
+      ));
+    } else {
+      widgets.add(SizedBox(
+        height: 1.0,
+      ));
+    }
+    widgets.add(SizedBox(
+      width: double.infinity,
+      child: Row(
+        children: <Widget>[
+          Text(
+            name,
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 14, color: text_black),
+          ),
+          Expanded(child: SizedBox()),
+          Switch(
+            onChanged: setLocalAuth,
+            value: this.isLocalAuth,
+          )
+        ],
+      ),
+    ));
+    widgets.add(SizedBox(
+      height: 1.0,
+    ));
+
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: Container(
+          height: 50,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widgets,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void setLocalAuth(bool value) {
+    LocalAuthManager.setLocalAuthState(value);
+    setState(() {
+      this.isLocalAuth = value;
+    });
   }
 }

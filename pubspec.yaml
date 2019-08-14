@@ -20,17 +20,18 @@ dependencies:
   flutter:
     sdk: flutter
   dio: 2.1.7
-  shared_preferences: 0.5.3+1
+  shared_preferences: 0.5.3+4
   sqflite: 1.1.5
   cupertino_icons: 0.1.2
   intl: 0.15.8
   rxdart: 0.22.0
   package_info: 0.4.0+4
   flutter_document_picker: 3.0.0
-  toast: 0.1.4
+  toast: 0.1.5
   path_provider: 1.1.0
   keyboard_visibility: any
   permission_handler: 3.1.0
+  local_auth: 0.5.2+4
   
 dev_dependencies:
   flutter_test:

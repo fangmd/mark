@@ -163,7 +163,9 @@ class _HistoryAllState extends State<HistoryAll> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      data.data.type,
+                      data.data.comments != ''
+                          ? data.data.type + ' - ' + data.data.comments
+                          : data.data.type,
                       style: TextStyle(fontSize: 14, color: text_hint),
                     ),
                     SizedBox(height: 10),
