@@ -48,10 +48,6 @@
     "image": "assets/images/record_item/bangong.png"
   },
   {
-    "title": "办公",
-    "image": "assets/images/record_item/bangong.png"
-  },
-  {
     "title": "教育",
     "image": "assets/images/record_item/education.png"
   },
@@ -78,5 +74,9 @@
   {
     "title": "丽人",
     "image": "assets/images/record_item/liren.png"
+  },
+  {
+    "title": "社交",
+    "image": "assets/images/record_item/shejiao.png"
   }
 ]
