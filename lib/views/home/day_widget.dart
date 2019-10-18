@@ -27,7 +27,7 @@ class DayWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(14.0),
         color: Colors.white,
       ),
-      height: 120, 
+      height: 121, 
       margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
       padding: EdgeInsets.all(20),
       child: Column(
